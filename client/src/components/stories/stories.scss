@@ -5,12 +5,13 @@
   gap: 10px;
   height: 150px;
   margin-bottom: 30px;
+  position: sticky;
 
-//   @include mobile {
-//     height: 50px;
-//     margin-bottom: 0;
-//     justify-content: space-between;
-//   }
+  @include mobile {
+    height: 50px;
+    margin-bottom: 0;
+    justify-content: space-between;
+  }
 
 //   @include tablet{
 //     height: 150px;
@@ -23,12 +24,12 @@
     overflow: hidden;
     position: relative;
 
-    // @include mobile {
-    //   flex: none;
-    //   width: 50px;
-    //   height: 50px;
-    //   border-radius: 50%;
-    // }
+    @include mobile {
+      flex: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
 
     img {
       width: 100%;
@@ -41,9 +42,9 @@
       left: 5px;
       color: white;
       font-weight: 500;
-    //   @include mobile {
-    //     display: none;
-    //   }
+      @include mobile {
+        display: none;
+      }
     }
 
     button {
@@ -62,13 +63,13 @@
       align-items: center;
       justify-content: center;
 
-    //   @include mobile {
-    //    left: 0;
-    //    right: 0;
-    //    top: 0;
-    //    bottom: 0;
-    //    margin: auto;
-    //   }
+      @include mobile {
+       left: 0;
+       right: 0;
+       top: 0;
+       bottom: 0;
+       margin: auto;
+      }
     }
   }
 }
