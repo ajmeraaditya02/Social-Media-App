@@ -1,36 +1,67 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
-import "./login.scss"
-import { Link } from "react-router-dom";
+import "./login.scss";
 
 const Login = () => {
-    const {login} = useContext(AuthContext);
-    const handleLogin = () => {
-        login();
-    };
-    return (
-        <div className="login">
-            <div className="card">
-                <div className="left">
-                    <h1>Socio Sphere.</h1>
-                    <p>My name is Aditya Ajmera and this is my Social Media App, please login to acess your profile or register if you are a new user.</p>
-                    <span>Don't have an account?</span>
-                    <Link to="/register">
-                        <button>Register</button>
-                    </Link>
-                </div>
-                <div className="right">
-                    <h1>Login</h1>
-                    <form>
-                        <input type="text" placeholder="Username"/>
-                        <input type="password" placeholder="Password"/>
-                        <button onClick={handleLogin}>Login</button>
-                    </form>
-                </div>
-            </div>
+  const [inputs, setInputs] = useState({
+    username: "",
+    password: "",
+  });
+  const [err, setErr] = useState(null);
+
+  const navigate = useNavigate()
+
+  const handleChange = (e) => {
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  const { login } = useContext(AuthContext);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await login(inputs);
+      navigate("/")
+    } catch (err) {
+      setErr(err.response?.data);
+    }
+  };
+
+  return (
+    <div className="login">
+      <div className="card">
+        <div className="left">
+          <h1>Hello World.</h1>
+          <p>
+            My Name is Aditya Ajmera. This is my Social Media App!
+          </p>
+          <span>Don't you have an account?</span>
+          <Link to="/register">
+            <button>Register</button>
+          </Link>
         </div>
-    )
-}
+        <div className="right">
+          <h1>Login</h1>
+          <form>
+            <input
+              type="text"
+              placeholder="Username"
+              name="username"
+              onChange={handleChange}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              onChange={handleChange}
+            />
+            {err && err}
+            <button onClick={handleLogin}>Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Login;
-
