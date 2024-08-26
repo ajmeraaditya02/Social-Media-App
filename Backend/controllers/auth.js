@@ -4,9 +4,12 @@ import jwt from "jsonwebtoken";
 
 export const register = (req, res) => {
   const q = "SELECT * FROM User WHERE username = ?";
-
+  console.log("123 ",req.body)
   db.query(q, [req.body.username], (err, data) => {
-    if (err) return res.status(500).json(err);
+    if (err) {
+    console.log(err);
+    return res.status(500).json(err);
+    }
     if (data.length) return res.status(409).json("User already exists!");
 
     const salt = bcrypt.genSaltSync(10);
@@ -23,22 +26,26 @@ export const register = (req, res) => {
     ];
 
     db.query(q, [values], (err, data) => {
-      if (err) return res.status(500).json(err);
+      if (err) {
+        console.log(err);
+        return res.status(500).json(err);
+      }
       return res.status(200).json("User has been created.");
     });
   });
 };
 
 export const login = (req, res) => {
+    // console.log('111', req.body)
   const q = "SELECT * FROM User WHERE username = ?";
 
   db.query(q, [req.body.username], (err, data) => {
     if (err) return res.status(500).json(err);
     if (data.length === 0) return res.status(404).json("User not found!");
-
+    // console.log('111', data)
     const checkPassword = bcrypt.compareSync(
       req.body.password,
-      data[0].password
+      data[0].Password
     );
 
     if (!checkPassword)
@@ -47,6 +54,8 @@ export const login = (req, res) => {
     const token = jwt.sign({ id: data[0].id }, "secretkey");
 
     const { password, ...others } = data[0];
+
+    // console.log(data)
 
     res
       .cookie("accessToken", token, {
